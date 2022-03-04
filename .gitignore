@@ -2,3 +2,4 @@
 TODO
 .vscode/settings.json
 .env
+__pycache__/
