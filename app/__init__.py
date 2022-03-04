@@ -5,9 +5,6 @@ from flask import Flask
 from config import Config
 from dotenv import load_dotenv
 
-app = Flask(__name__)
-load_dotenv()
-
 
 def create_app(config_class=Config):
     """
@@ -15,4 +12,16 @@ def create_app(config_class=Config):
     @config_class: configuration variables of the application
     Returns: an application instance object
     """
+    app = Flask(__name__)
+    # attach the configuration variables from the application
+    app.config.from_object(Config)
+    load_dotenv()
+
+    from app.core import bp as core_bp
+    app.register_blueprint(core_bp)
+
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+
     return app
