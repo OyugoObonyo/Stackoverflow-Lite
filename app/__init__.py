@@ -3,8 +3,10 @@ A module containing a factory function to initialize the application
 """
 from flask import Flask
 from config import Config
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+load_dotenv()
 
 
 def create_app(config_class=Config):
