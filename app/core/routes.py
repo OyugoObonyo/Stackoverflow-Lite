@@ -10,4 +10,4 @@ def index():
     """
     route that renders the application's index template
     """
-    return render_template('index.html', title="Home")
+    return render_template('core/index.html', title="Home")
