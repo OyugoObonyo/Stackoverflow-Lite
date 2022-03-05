@@ -1,6 +1,7 @@
 """
 A module containing a data model of a user in the system
 """
+from app import login
 from db.modify_db import run_sql
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -9,15 +10,14 @@ class User:
     """
     The user's data model
     """
-    def __init__(self, id, created_at, username, email, password_hash):
+    def __init__(self, username, email):
         """
         Initialzing the user class
         """
-        self.id = id
-        self.created_at = created_at
         self.username = username
         self.email = email
-        self.password_hash = password_hash
+        self.password_hash = ""
+        self.created_at = ""
 
     def set_password(self, password):
         """
@@ -39,11 +39,30 @@ class User:
         """
         sql = """
             INSERT INTO users(
-                id,
                 created_at,
                 username,
                 email,
-                password_hash') VALUES (%s, %s, %s, %s)
+                password_hash) VALUES (%s, %s, %s, %s) RETURNING id
             """
         val = [self.created_at, self.username, self.email, self.password_hash]
-        run_sql(sql, val)
+        results = run_sql(sql, val)
+
+    def get_by_id(self, id):
+        """
+        get_by_id - retrives a user of a particular id from database
+        @id: the id passed as integer
+        Returns: user id
+        """
+        sql = "SELECT * FROM users WHERE id = %s"
+        val = [id]
+        result = run_sql(sql, val)[0]
+        return result
+
+
+@login.user_loader
+def load_user(id):
+    """
+    load_user - aids flask in geting user id for login
+    Returns: user with particular id
+    """
+    return User.get_by_id(id)
