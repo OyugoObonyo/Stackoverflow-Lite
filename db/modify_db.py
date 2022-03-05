@@ -7,6 +7,11 @@ import psycopg2.extras as ext
 
 
 def run_sql(sql, values=None):
+    """
+    run_sql - function that handles the running of sql queries
+    @sql: the sql query to be run
+    @values: values to be run om sql query. Default is none
+    """
     conn = None
     results = []
 
