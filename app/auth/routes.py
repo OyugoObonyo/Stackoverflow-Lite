@@ -2,10 +2,10 @@
 A module with views related to authorization and authentication
 """
 from flask import current_app, render_template, redirect
-from auth import bp
-from auth.forms import RegistrationForm
+from app.auth import bp
+from app.auth.forms import RegistrationForm
 from app.models.user import User
-import
+import datetime
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -19,6 +19,10 @@ def register():
             username=form.username.data,
             email=form.email.data
         )
+        user.set_password(form.password.data)
+        time = datetime.datetime.now()
+        user.created_at = time
+        user.save()
     return render_template('auth/register.html', title="Register", form=form)
 
 
