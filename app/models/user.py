@@ -10,12 +10,12 @@ class User:
     """
     The user's data model
     """
-    def __init__(self, username, email):
+    def __init__(self, username):
         """
         Initialzing the user class
         """
         self.username = username
-        self.email = email
+        self.email = ""
         self.password_hash = ""
         self.created_at = ""
 
@@ -26,12 +26,12 @@ class User:
         """
         self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password):
+    def check_password(password_hash, password):
         """
         check_password - confirms a hash is assigned to the correct password
         Returns: True if the hash matches the password and false if it doesn't
         """
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(password_hash, password)
 
     def save(self):
         """
@@ -47,15 +47,26 @@ class User:
         val = [self.created_at, self.username, self.email, self.password_hash]
         results = run_sql(sql, val)
 
-    def get_by_id(self, id):
+    def get_by_id(id):
         """
         get_by_id - retrives a user of a particular id from database
         @id: the id passed as integer
-        Returns: user id
+        Returns: user with passed id
         """
         sql = "SELECT * FROM users WHERE id = %s"
-        val = [id]
-        result = run_sql(sql, val)[0]
+        value = [id]
+        result = run_sql(sql, value)[0]
+        return result['id']
+
+    def get_by_name(name):
+        """
+        get_by_name - retireves user with a particular name from the database
+        @name: name of the user to be retrieved
+        Returns: user who matches the name that is passed
+        """
+        sql = "SELECT * FROM users WHERE username = %s"
+        value = [name]
+        result = run_sql(sql, value)[0]
         return result
 
 
