@@ -2,22 +2,31 @@
 A module containing a data model of a user in the system
 """
 from app import login
+from flask_login import UserMixin
 from db.modify_db import run_sql
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User:
+class User(UserMixin):
     """
     The user's data model
     """
-    def __init__(self, username):
+    def __init__(
+        self,
+        username,
+        email=None,
+        password_hash=None,
+        created_at=None,
+        id=None
+    ):
         """
         Initialzing the user class
         """
         self.username = username
-        self.email = ""
-        self.password_hash = ""
-        self.created_at = ""
+        self.email = email
+        self.password_hash = password_hash
+        self.created_at = created_at
+        self.id = id
 
     def set_password(self, password):
         """
@@ -55,8 +64,18 @@ class User:
         """
         sql = "SELECT * FROM users WHERE id = %s"
         value = [id]
-        result = run_sql(sql, value)[0]
-        return result['id']
+        try:
+            result = run_sql(sql, value)[0]
+            user = User(
+                id=result['id'],
+                created_at=result['created_at'],
+                username=result['username'],
+                email=result['email'],
+                password_hash=result['password_hash']
+            )
+        except IndexError:
+            return None
+        return user
 
     def get_by_name(name):
         """
@@ -66,8 +85,18 @@ class User:
         """
         sql = "SELECT * FROM users WHERE username = %s"
         value = [name]
-        result = run_sql(sql, value)[0]
-        return result
+        try:
+            result = run_sql(sql, value)[0]
+            user = User(
+                id=result['id'],
+                created_at=result['created_at'],
+                username=result['username'],
+                email=result['email'],
+                password_hash=result['password_hash']
+            )
+        except IndexError:
+            return None
+        return user
 
 
 @login.user_loader
