@@ -14,6 +14,8 @@ def register():
     """
     route that handles the user registration action
     """
+    if current_user.is_authenticated:
+        return redirect(url_for('core.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
@@ -36,10 +38,19 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_name(form.username.data)
-        print(user)
-        if user is None or not User.check_password(user['password_hash'], form.password.data):
+        if user is None or not \
+                User.check_password(user.password_hash, form.password.data):
             flash("Invalid username or password")
             return redirect(url_for('auth.login'))
-        login_user(user['id'])
+        login_user(user)
         return redirect(url_for('core.index'))
     return render_template('auth/login.html', title="Log In", form=form)
+
+
+@bp.route('/logout')
+def logout():
+    """
+    Route that handles logging users out
+    """
+    logout_user()
+    return redirect(url_for('auth.login'))
