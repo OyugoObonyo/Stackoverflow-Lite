@@ -18,8 +18,7 @@ def register():
         return redirect(url_for('core.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data)
-        user.email = form.email.data
+        user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         user.created_at = datetime.datetime.now()
         user.save()
@@ -53,4 +52,4 @@ def logout():
     Route that handles logging users out
     """
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('core.index'))
