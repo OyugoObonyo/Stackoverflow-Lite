@@ -1,11 +1,11 @@
 """
 Fixtures for the pytest module
 """
+
 from app import create_app
-import os
-import psycopg2
+from app.models.user import User
+from config import TestingConfig
 import pytest
-import psycopg2.extras as ext
 
 
 @pytest.fixture(scope="module")
@@ -13,8 +13,8 @@ def test_client():
     """
     creates an instance of flask application to be used
     """
-    app = create_app('testing')
-    # Establish an application context
+    app = create_app(config_class=TestingConfig)
+    app.config['SECRET_KEY'] = "secret-key-test"
     ctx = app.app_context()
     ctx.push()
     with app.test_client() as c:
@@ -22,20 +22,12 @@ def test_client():
     ctx.pop()
 
 
-@pytest.fixture(scope="session")
-def setup_db():
+@pytest.fixture(scope="module")
+def new_user():
     """
-    creates a database connection
+    creates a user object to be used across the application
     """
-    conn = psycopg2.connect(
-            host="localhost",
-            database="test_stackoverflow",
-            user="test_stack",
-            password="password",
-            sslmode='require')
-    cur = conn.cursor(cursor_factory=ext.DictCursor)
-    yield cur0
-    cur.execute(sql, values)
-    conn.commit()
-    results = cur.fetchall()
-    cur.close()
+    user = User(
+        username='name',
+        email="email@mail.com")
+    return user
