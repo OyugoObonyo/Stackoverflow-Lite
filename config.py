@@ -5,7 +5,7 @@ A module containing the application's Config class
 import os
 
 
-class Config(object):
+class Config:
     """
     The config class contains the application's default configurations
     """
@@ -35,6 +35,7 @@ class TestingConfig(Config):
     DB_NAME = os.environ.get('DB_TEST_NAME')
     DB_PASSWORD = os.environ.get('DB_TEST_PASSWORD')
     DB_USERNAME = os.environ.get('DB_TEST_USERNAME')
+    TESTING = True
 
 
 class ProductionConfig(Config):
@@ -42,11 +43,3 @@ class ProductionConfig(Config):
     Application's configurations during production
     """
     pass
-
-
-config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
-}
