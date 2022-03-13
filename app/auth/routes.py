@@ -37,8 +37,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_name(form.username.data)
-        if user is None or not \
-                User.check_password(user.password_hash, form.password.data):
+        if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
             return redirect(url_for('auth.login'))
         login_user(user)
