@@ -1,13 +1,11 @@
 """
 A module containing a data model of a user in the system
 """
-from app import login
-from flask_login import UserMixin
 from db.modify_db import run_sql
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(UserMixin):
+class User:
     """
     The user's data model
     """
@@ -97,12 +95,3 @@ class User(UserMixin):
         except IndexError:
             return None
         return user
-
-
-@login.user_loader
-def load_user(id):
-    """
-    load_user - aids flask in geting user id for login
-    Returns: user with particular id
-    """
-    return User.get_by_id(id)
