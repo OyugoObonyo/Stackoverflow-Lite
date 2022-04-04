@@ -10,12 +10,14 @@ class RegistrationForm(FlaskForm):
     """
     Model of registration form
     """
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+
+    username = StringField("Username", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField(
-        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
+        "Confirm Password", validators=[DataRequired(), EqualTo("password")]
+    )
+    submit = SubmitField("Register")
 
     def validate_username(self, username):
         """
@@ -36,6 +38,7 @@ class LoginForm(FlaskForm):
     """
     Model of login form
     """
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log in')
+
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Log in")

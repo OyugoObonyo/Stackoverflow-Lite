@@ -5,9 +5,9 @@ from flask import render_template
 from app.core import bp
 
 
-@bp.route('/')
+@bp.route("/")
 def index():
     """
     route that renders the application's index template
     """
-    return render_template('core/index.html', title="Home")
+    return render_template("core/index.html", title="Home")

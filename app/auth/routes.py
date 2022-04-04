@@ -9,13 +9,13 @@ from app.models.user import User
 import datetime
 
 
-@bp.route('/register', methods=['GET', 'POST'])
+@bp.route("/register", methods=["GET", "POST"])
 def register():
     """
     route that handles the user registration action
     """
     if current_user.is_authenticated:
-        return redirect(url_for('core.index'))
+        return redirect(url_for("core.index"))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
@@ -24,33 +24,34 @@ def register():
         user.created_at = datetime.datetime.now()
         user.save()
         flash("You have successfully signed up")
-        return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', title="Register", form=form)
+        return redirect(url_for("auth.login"))
+    return render_template("auth/register.html", title="Register", form=form)
 
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route("/login", methods=["GET", "POST"])
 def login():
     """
     route that handles user login action
     """
     if current_user.is_authenticated:
-        return redirect(url_for('core.index'))
+        return redirect(url_for("core.index"))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_by_name(form.username.data)
-        if user is None or not \
-                User.check_password(user.password_hash, form.password.data):
+        if user is None or not User.check_password(
+            user.password_hash, form.password.data
+        ):
             flash("Invalid username or password")
-            return redirect(url_for('auth.login'))
+            return redirect(url_for("auth.login"))
         login_user(user)
-        return redirect(url_for('core.index'))
-    return render_template('auth/login.html', title="Log In", form=form)
+        return redirect(url_for("core.index"))
+    return render_template("auth/login.html", title="Log In", form=form)
 
 
-@bp.route('/logout')
+@bp.route("/logout")
 def logout():
     """
     Route that handles logging users out
     """
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for("auth.login"))
