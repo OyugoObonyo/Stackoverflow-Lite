@@ -4,4 +4,4 @@ TODO
 .env
 __pycache__/
 
-.coverage
+trial.py

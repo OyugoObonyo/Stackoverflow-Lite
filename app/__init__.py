@@ -21,9 +21,11 @@ def create_app(config_class=DevelopmentConfig):
 
     
     from app.core import bp as core_bp
+
     app.register_blueprint(core_bp)
 
     from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    app.register_blueprint(auth_bp, url_prefix="/auth")
 
     return app
