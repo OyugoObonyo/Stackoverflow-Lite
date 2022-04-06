@@ -7,11 +7,13 @@ import psycopg2.extras as ext
 
 
 conn = psycopg2.connect(
-            host=current_app.config['DB_HOST'],
-            database=current_app.config['DB_NAME'],
-            user=current_app.config['DB_USERNAME'],
-            password=current_app.config['DB_PASSWORD'],
-            sslmode='require')
+    host=current_app.config["DB_HOST"],
+    database=current_app.config["DB_NAME"],
+    user=current_app.config["DB_USERNAME"],
+    password=current_app.config["DB_PASSWORD"],
+    sslmode="require",
+)
+
 
 def run_sql(sql: str, conn, values=None) -> list:
     """
