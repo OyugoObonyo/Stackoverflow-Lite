@@ -3,9 +3,7 @@
 A module containing a data model of a user in the system
 """
 
-from db.modify_db import run_sql
 from flask import current_app
-import bcrypt
 import datetime
 import jwt
 
