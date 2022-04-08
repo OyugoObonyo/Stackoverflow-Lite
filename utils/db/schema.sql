@@ -2,7 +2,6 @@
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMPTZ,
-    modified_at TIMESTAMPTZ,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT
