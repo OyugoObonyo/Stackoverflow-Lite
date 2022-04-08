@@ -6,8 +6,8 @@ This module demonstrates implementation of SqlUserQueryModel class that is
 useful in querying the database's user table
 """
 
-from abstract_user_query import AbtsractUserQueryModel
-from db import modify_db
+from app.models.abstract_user_query import AbtsractUserQueryModel
+from utils.db import modify_db
 from user import User
 
 
@@ -20,7 +20,7 @@ class SqlUserQueryModel(AbtsractUserQueryModel):
     databases
     """
 
-    def save(self):
+    def save(user):
         """
 
         Saves the particlar user to the database
@@ -33,7 +33,7 @@ class SqlUserQueryModel(AbtsractUserQueryModel):
                 email,
                 password_hash) VALUES (%s, %s, %s, %s) RETURNING id
             """
-        val = [self.created_at, self.username, self.email, self.password_hash]
+        val = [user.created_at, user.username, user.email, user.password_hash]
         modify_db.run_sql(sql, val)
 
     def get_by_id(id):

@@ -18,11 +18,15 @@ class AbtsractUserQueryModel(ABC):
     QueryUserModel objects are tasked with querying the User table in the
     database to retrieve object(s) that match a particular request
     """
-    @abstractmethod
-    def save(self, user): pass
 
     @abstractmethod
-    def get_by_id(self, id): pass
+    def save(self, user):
+        pass
 
     @abstractmethod
-    def get_by_name(self, name): pass
+    def get_by_id(self, id):
+        pass
+
+    @abstractmethod
+    def get_by_name(self, name):
+        pass

@@ -1,7 +1,7 @@
 """
 A module containing a factory function to initialize the application
 """
-from flask import  Flask
+from flask import Flask
 from config import DevelopmentConfig
 from dotenv import load_dotenv
 
@@ -19,7 +19,6 @@ def create_app(config_class=DevelopmentConfig):
     app.config.from_object(config_class)
     load_dotenv()
 
-    
     from app.core import bp as core_bp
 
     app.register_blueprint(core_bp)
