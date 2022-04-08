@@ -9,6 +9,7 @@ from app.models.user import User
 from app.models.sql_user_query_model import SqlUserQueryModel
 from flask import make_response, request
 from utils.passwords import hashing
+import datetime
 
 
 @bp.route("/register", methods=["POST"])
@@ -40,4 +41,4 @@ def register():
             "status": "fail",
             "message": "A user with these credentials already exists"
         }
-        return make_response(response), 401
+        return make_response(response), 400
