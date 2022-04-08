@@ -8,7 +8,7 @@ useful in querying the database's user table
 
 from app.models.abstract_user_query import AbtsractUserQueryModel
 from utils.db import modify_db
-from user import User
+from app.models.user import User
 
 
 class SqlUserQueryModel(AbtsractUserQueryModel):
