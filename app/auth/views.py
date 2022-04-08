@@ -3,6 +3,7 @@
 routes that handle user authentication
 """
 
+
 from app.auth import bp
 from app.models.user import User
 from app.models.sql_user_query_model import SqlUserQueryModel
@@ -33,6 +34,7 @@ def register():
                 "email": user.email
             }
         }
+        return make_response(response), 201
     else:
         response = {
             "status": "fail",

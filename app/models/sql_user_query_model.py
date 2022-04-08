@@ -6,7 +6,7 @@ This module demonstrates implementation of SqlUserQueryModel class that is
 useful in querying the database's user table
 """
 
-from abstract_user_query import AbtsractUserQueryModel
+from app.models.abstract_user_query import AbtsractUserQueryModel
 from utils.db import modify_db
 from user import User
 
