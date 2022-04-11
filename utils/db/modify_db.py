@@ -31,8 +31,8 @@ def run_sql(sql: str, values=None) -> list:
         conn.commit()
         results = cur.fetchall()
         cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+    except psycopg2.DatabaseError as e:
+        print(e)
     finally:
         if conn is not None:
             conn.close()
