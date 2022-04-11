@@ -81,3 +81,26 @@ class SqlUserQueryModel(AbtsractUserQueryModel):
         except IndexError:
             return None
         return user
+
+    def get_by_email(email):
+
+        """
+        get_by_email - retireves user with a particular email from the database
+        @email: name of the user to be retrieved
+        Returns: user who matches the email that is passed
+        """
+
+        sql = "SELECT * FROM users WHERE email = %s"
+        value = [email]
+        try:
+            result = modify_db.run_sql(sql, value)[0]
+            user = User(
+                id=result["id"],
+                created_at=result["created_at"],
+                username=result["username"],
+                email=result["email"],
+                password_hash=result["password_hash"],
+            )
+        except IndexError:
+            return None
+        return user
