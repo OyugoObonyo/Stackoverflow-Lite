@@ -3,14 +3,11 @@
 routes that handle user authentication
 """
 
-
-from crypt import methods
 from app.auth import bp
 from app.models.user import User
 from app.models.sql_user_query_model import SqlUserQueryModel
-from flask import make_response, request
+from flask import request
 from utils.passwords import hashing
-import bcrypt
 import datetime
 
 
@@ -21,47 +18,48 @@ def register():
     register route handles user registration to the database
     """
 
-    response = request.get_json()
-    check_name = SqlUserQueryModel.get_by_name(response["username"])
-    check_email = SqlUserQueryModel.get_by_email(response["email"])
+    user_data = request.get_json()
+    check_name = SqlUserQueryModel.get_by_name(user_data["username"])
+    check_email = SqlUserQueryModel.get_by_email(user_data["email"])
     if check_name is None and check_email is None:
         user = User(
-            username=response["username"],
-            email=response["email"],
-            password_hash=hashing.generate_password_hash(response["password"]),
-            created_at=datetime.datetime.utcnow()
+            username=user_data["username"],
+            email=user_data["email"],
+            password_hash=hashing.generate_password_hash(user_data["password"]),
+            created_at=datetime.datetime.utcnow(),
         )
         SqlUserQueryModel.save(user)
         response = {
             "status": "success",
-            "account_information": {
-                "name": user.username,
-                "email": user.email
-            }
+            "account_information": {"name": user.username, "email": user.email},
         }
-        return make_response(response), 201
+        return response
     else:
         response = {
             "status": "fail",
-            "message": "A user with these credentials already exists"
+            "message": "A user with these credentials already exists",
         }
-        return make_response(response), 400
+        return response
 
-    
+
 @bp.route("login", methods=["POST"])
 def login():
     """
-    
     handles user logins
     """
 
-    response = request.get_json()
-    user = SqlUserQueryModel.get_by_email(response['email'])
+    user_data = request.get_json()
+    user = SqlUserQueryModel.get_by_email(user_data["email"])
     if user is not None:
-        if bcrypt.checkpw(response['password'], user.password_hash):
-            response = {
-                "status": "success",
-                "token": 
-            }
-
-        
+        if hashing.check_password_hash(user_data["password"], user.password_hash):
+            token = user.generate_token(user.id)
+            response = {"status": "success", "auth_token": token}
+            return response
+        response = {
+            "status": "fail",
+            "message": "Incorrect email and password combination",
+        }
+        return response
+    else:
+        response = {"status": "fail", "message": "A user with this email doesn't exist"}
+        return response
