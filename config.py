@@ -9,6 +9,7 @@ class Config:
     """
     The config class contains the application's default configurations
     """
+
     DB_HOST = "localhost"
     DEBUG = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
