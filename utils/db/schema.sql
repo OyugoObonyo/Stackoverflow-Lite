@@ -16,6 +16,12 @@ CREATE TABLE questions (
     question_summary TEXT,
     CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE blacklist_tokens (
+    id SERIAL PRIMARY KEY,
+    token TEXT,
+    added_at TIMESTAMPTZ
+)
 /*
 CREATE TABLE answers (
     id
