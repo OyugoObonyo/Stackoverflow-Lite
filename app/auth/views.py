@@ -3,9 +3,10 @@
 routes that handle user authentication
 """
 
+from base64 import decode
 from app.auth import bp
 from app.models.user import User
-from app.models.sql_user_query_model import SqlUserQueryModel
+from app.models.sql_query_models.sql_user_query_model import SqlUserQueryModel
 from flask import request
 from utils.passwords import hashing
 import datetime
@@ -45,6 +46,7 @@ def register():
 @bp.route("login", methods=["POST"])
 def login():
     """
+    
     handles user logins
     """
 
@@ -61,5 +63,27 @@ def login():
         }
         return response
     else:
-        response = {"status": "fail", "message": "A user with this email doesn't exist"}
+        response = {
+            "status": "fail",
+            "message": "A user with this email doesn't exist"
+        }
         return response
+
+
+@bp.route("logout", methods=["POST"])
+def logout():
+    """
+    
+    handles user logouts
+    """
+    auth_header = request.header.get('Authorization')
+    print(f"auth_header: {auth_header}")
+    auth_token = auth_header.split(" ")[1]
+    if auth_token:
+        decoded_token = User.decode_auth_token(auth_token)
+        print(f"decoded token is: {decoded_token} and is of type {type(decoded_token)}")
+        if not isinstance(decoded_token, str):
+
+
+
+    
